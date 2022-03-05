@@ -1,0 +1,59 @@
+{
+	"AllowedExtension": [
+		"csv"
+	],
+	"DataFolder": {
+		"__root__": "data",
+		"RawTrainDataUploadFolder": "raw_training",
+		"RawPredictDataUploadFolder": "raw_predict",
+		"GoodTrainDataFolder": "good_training_data",
+		"BadTrainDataFolder": "bad_training_data",
+		"GoodPredictDataFolder": "good_prediction_data",
+		"BadPredictDataFolder": "bad_prediction_data",
+		"ErrorDBInsertData": "error_DB_insert_data",
+		"TrainData": "training_data",
+		"PredictData": "predict_data",
+		"PredictOutputFile": "prediction_output_file"
+	},
+	"LogFolder": {
+		"__root__": "log",
+		"TrainValidationLog": "training_validation_log",
+		"TrainningLog": "training_log",
+		"PredictionValidationLog": "prediction_validation_log",
+		"PredictionLog": "prediction_log"
+	},
+	"KMeansFigureFolder": "DataPreprocess",
+	"ModelFolder": {
+		"__root__": "model",
+		"KMeans": "KMeans"
+	},
+	"TargetColumnName": "default.payment.next.month",
+	"DBTrainingTable": "training_data",
+	"NumberofColumns": 25,
+	"ColDetail": {
+		"LIMIT_BAL": "Integer",
+		"SEX": "Integer",
+		"EDUCATION": "Integer",
+		"MARRIAGE": "Integer",
+		"AGE": "Integer",
+		"PAY_0": "Integer",
+		"PAY_2": "Integer",
+		"PAY_3": "Integer",
+		"PAY_4": "Integer",
+		"PAY_5": "Integer",
+		"PAY_6": "Integer",
+		"BILL_AMT1": "Integer",
+		"BILL_AMT2": "Integer",
+		"BILL_AMT3": "Integer",
+		"BILL_AMT4": "Integer",
+		"BILL_AMT5": "Integer",
+		"BILL_AMT6": "Integer",
+		"PAY_AMT1": "Integer",
+		"PAY_AMT2": "Integer",
+		"PAY_AMT3": "Integer",
+		"PAY_AMT4": "Integer",
+		"PAY_AMT5": "Integer",
+		"PAY_AMT6": "Integer",
+		"default.payment.next.month": "Integer"
+	}
+}

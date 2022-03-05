@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Credit Card Default Detection</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typicons/2.0.9/typicons.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Footer-Basic.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Login-Form-Clean-1.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Login-Form-Clean.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Login-Form-Dark.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"
+        integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#alertMsg").fadeTo(2000, 500).slideUp(500, function () {
+                $("#alertMsg").slideUp(500);
+            });
+        });
+    </script>
+</head>
+
+<body
+    style="background: linear-gradient(-174deg, black 2%, rgba(245,245,245,0) 97%, rgb(246,246,246) 97%, white), url(&quot;{{ url_for('static', filename='img/backimg.jpg') }}&quot;);height: 100%;background-size: 100%;margin: 0;background-repeat: no-repeat;background-attachment: fixed;">
+    <div class="jumbotron">
+        <h1 class="text-center" style="color: rgb(255,255,255);padding-top: 5%;font-size: 48px;">Credit Card Default
+            Detection</h1>
+    </div>
+
+    <!-- <div class="row">
+        <div class="col-md-5"></div> -->
+
+    <!-- {% if flagSuccess == 1 %} -->
+    <!-- FILE UPLOAD SUCCESS MSG-->
+    <!-- <div class="col-md-2 alert alert-success alert-dismissible fade show text-center" id="alertMsg" role="alert"
+            style="padding-right: 0;">
+            File has been uploaded!
+        </div> -->
+    <!-- {% endif %} -->
+
+    <!-- {% if flagSuccess == -1 %} -->
+    <!-- FILE UPLOAD ERROR MSG-->
+    <!-- <div class="col-md-2 alert alert-danger alert-dismissible fade show text-center" id="alertMsg" role="alert"
+            style="padding-right: 0;">
+            File not uploaded!
+        </div> -->
+    <!-- {% endif %} -->
+    <!-- </div> -->
+
+
+    <div class="container">
+        <!-- PREDICT FORM -->
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <section id="predict_model" class="login-clean" style="padding-left: 15%;">
+                    <form id="predict_data_form" action="predict" method="post" enctype=multipart/form-data>
+                        <div class="illustration"><i class="typcn typcn-media-fast-forward-outline"></i></div>
+                        <div class="mb-3">
+                            <p class="text-center">Upload file for prediction with default model</p>
+                            <input class="form-control" name="predictFilepath" type="file" id="file_predict">
+                        </div>
+                        <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit">Predict</button>
+                        </div>
+                        <!-- Progress Bar -->
+                        <div class="progress predictProgress">
+                            <div class="predictProgressBar progress-bar progress-bar-striped bg-success progress-bar-animated"
+                                role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">Please wait
+                            </div>
+                        </div>
+                        <!-- Status Message -->
+                        <div id="targetLayerPredict" class="text-center" style="display:none;">
+                            <div id="predictSuccess" style="display:none;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-check-circle-fill text-success" viewBox="0 0 16 16">
+                                    <path
+                                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                </svg>&nbsp;&nbsp;<span class="text-success">File predicted successfully and saved!</span>
+                            </div>
+                            <div id="predictError" style="display:none;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-x-circle-fill text-danger" viewBox="0 0 16 16">
+                                    <path
+                                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+                                </svg>&nbsp;&nbsp;<span class="text-danger">Error occured!</span>
+                            </div>
+                        </div>
+
+                    </form>
+                </section>
+            </div>
+
+            <!-- UPLOAD FORM -->
+            <div class="col-md-6">
+                <section id="upload_data" class="login-clean" style="padding-right: 15%;">
+                    <form id="train_data_form" action="upload" method="post" enctype=multipart/form-data>
+                        <div class="illustration"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                fill="currentColor" viewBox="0 0 16 16" class="bi bi-cloud-upload">
+                                <path fill-rule="evenodd"
+                                    d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z">
+                                </path>
+                                <path fill-rule="evenodd"
+                                    d="M7.646 4.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V14.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3z">
+                                </path>
+                            </svg></div>
+                        <div class="mb-3">
+                            <p class="text-center">Upload file to further train the default model</p>
+                            <input class="form-control" name="trainFilepath" type="file" id="file_training">
+                        </div>
+                        <div class="form-check" style="font-size: 14px;">
+                            <input class="form-check-input" type="radio" name="model_mode" id="train_model_begin" value="del_model" checked>
+                              Train model from beginning<br/>
+                            </input>
+                            <input class="form-check-input" type="radio" name="model_mode" id="train_model_append" value="append_model">
+                              Further re-train model<br/>
+                            </input>
+                        </div>
+                        <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit">Upload for
+                                Training</button></div>
+                        <!-- Progress Bar -->
+                        <div class="progress trainingProgress">
+                            <div class="trainingProgressBar progress-bar progress-bar-striped bg-success progress-bar-animated"
+                                role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">Please wait
+                            </div>
+                        </div>
+                        <!-- Status Message -->
+                        <div id="targetLayerTraining" class="text-center" style="display:none;">
+                            <div id="trainingSuccess" style="display:none;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-check-circle-fill text-success" viewBox="0 0 16 16">
+                                    <path
+                                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                </svg>&nbsp;&nbsp;<span class="text-success">File uploaded successfully!</span>
+                            </div>
+                            <div id="trainingError" style="display:none;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-x-circle-fill text-danger" viewBox="0 0 16 16">
+                                    <path
+                                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+                                </svg>&nbsp;&nbsp;<span class="text-danger">Error occured!</span>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('.trainingProgress').hide()
+            $('.predictProgress').hide()
+        });
+        // -------------- TRAINING DATA --------------
+        $(document).ready(function () {
+            $('#train_data_form').submit(function (event) {
+                if ($('#file_training').val()) {
+                    event.preventDefault();
+                    $('.trainingProgress').show()
+                    $('#targetLayerTraining').hide();
+                    $('#trainingSuccess').hide();
+                    $('#trainingError').hide();
+
+                    $(this).ajaxSubmit({
+                        target: '#targetLayerTraining',
+                        beforeSubmit: function () {
+                            $('.trainingProgressBar').width('10%');
+                        },
+                        uploadProgress: function (event, position, total, percentageComplete) {
+                            $('.trainingProgressBar').animate({
+                                width: percentageComplete + '%'
+                            }, {
+                                duration: 1000
+                            });
+                        },
+                        dataType: 'json',
+                        success: function (json) {
+                            $('.trainingProgress').hide()
+                            $('#targetLayerTraining').show();
+                            if (json.flagSuccess == '1') {
+                                $('#trainingSuccess').show();
+                            }
+                            else {
+                                $('#trainingError').show();
+                            }
+                        },
+                        resetForm: true
+                    });
+                }
+                return false;
+            });
+        });
+        
+        // -------------- PREDICT DATA --------------
+        $(document).ready(function () {
+            $('#predict_data_form').submit(function (event) {
+                if ($('#file_predict').val()) {
+                    event.preventDefault();
+                    $('.predictProgress').show()
+                    $('#targetLayerPredict').hide();
+                    $('#predictSuccess').hide();
+                    $('#predictError').hide();
+
+                    $(this).ajaxSubmit({
+                        target: '#targetLayerPredict',
+                        beforeSubmit: function () {
+                            $('.predictProgressBar').width('10%');
+                        },
+                        uploadProgress: function (event, position, total, percentageComplete) {
+                            $('.predictProgressBar').animate({
+                                width: percentageComplete + '%'
+                            }, {
+                                duration: 1000
+                            });
+                        },
+                        dataType: 'json',
+                        success: function (json) {
+                            $('.predictProgress').hide()
+                            $('#targetLayerPredict').show();
+                            if (json.flagSuccess == '1') {
+                                $('#predictSuccess').show();
+                            }
+                            else {
+                                $('#predictError').show();
+                            }
+                        },
+                        resetForm: true
+                    });
+                }
+                return false;
+            });
+        });
+    </script>
+
+</body>
+</html>
