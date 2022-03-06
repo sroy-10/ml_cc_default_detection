@@ -106,7 +106,7 @@ class PredictModel:
                 # Append the result into prediction file
                 tmp = pd.DataFrame(
                     {
-                        "ID": cluster_data.iloc[:, 0],
+                        # "ID": cluster_data.iloc[:, 0],
                         "Predictions": result,
                     }
                 )
